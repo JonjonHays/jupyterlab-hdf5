@@ -16,7 +16,6 @@ class HdfDataManager(HdfBaseManager):
     """
     def _get(self, f, uri, select):
         print("SELECT: " + str(select))
-        # print("DATA RETURN: " + str(dsetChunk(f[uri], row, col)))
         return dsetChunk(f[uri], select)
 
 

@@ -39,14 +39,6 @@ class HdfBaseManager:
             msg = 'The request was malformed; fpath should not be empty.'
             _handleErr(400, msg)
 
-        # if row and not col:
-        #     msg = f'The request was malformed; row slice was specified, but col slice was empty.'
-        #     _handleErr(400, msg)
-        #
-        # if col and not row:
-        #     msg = f'The request was malformed; col slice was specified, but row slice was empty.'
-        #     _handleErr(400, msg)
-
         fpath = url_path_join(self.notebook_dir, relfpath)
 
         if not os.path.exists(fpath):
@@ -70,7 +62,6 @@ class HdfBaseManager:
 
             return out
 
-
 ## handler
 class HdfBaseHandler(APIHandler):
     managerClass = None
@@ -91,10 +82,7 @@ class HdfBaseHandler(APIHandler):
         """
         uri = '/' + self.get_query_argument('uri').lstrip('/')
         select = self.get_query_argument('select', default='ALL')
-        # col = self.getQueryArguments('col', int)
-
         try:
-            # print("REQUEST RETURN: " + str(json.dumps(self.manager.get(path, uri, row, col))))
             self.finish(json.dumps(self.manager.get(path, uri, select)))
 
         except HTTPError as err:
@@ -104,9 +92,3 @@ class HdfBaseHandler(APIHandler):
                 response,
                 err.message
             )))
-
-    # def getQueryArguments(self, key, func=None):
-    #     if func is not None:
-    #         return [func(x) for x in self.get_query_argument(key).split(',')] if key in self.request.query_arguments else None
-    #     else:
-    #         return [x for x in self.get_query_argument(key).split(',')] if key in self.request.query_arguments else None

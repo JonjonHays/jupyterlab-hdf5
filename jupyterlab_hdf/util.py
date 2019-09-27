@@ -20,11 +20,8 @@ __all__ = [
 #     return slice(s.start*chunk, s.stop*chunk, s.step)
 
 def dsetChunk(dset, select):
-    # print("DATA SHAPE: " + str(dset[slice(*row), slice(*col)].shape))
-    # print("DATA SHAPE: " + str(dset[0:4, 0:4, 0:4, 0:4].shape))
     slices = getHyperslabSlices(dset.shape, select)
     return dset[slices].tolist()
-    # return dset[slice(*row), slice(*col)].tolist()
 
 def getHyperslabSlices(dsetshape, select):
     rank = len(dsetshape)
