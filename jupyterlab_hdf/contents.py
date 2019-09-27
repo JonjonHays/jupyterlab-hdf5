@@ -7,7 +7,7 @@ Distributed under the terms of the Modified BSD License.
 import h5py
 
 from .baseHandler import HdfBaseManager, HdfBaseHandler
-from .util import dsetContentDict, dsetDict, groupDict, uriJoin, uriName
+# from .util import dsetContentDict, dsetDict, groupDict, uriJoin, uriName
 
 __all__ = ['HdfContentsManager', 'HdfContentsHandler']
 
