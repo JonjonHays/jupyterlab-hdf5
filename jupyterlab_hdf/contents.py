@@ -15,19 +15,24 @@ __all__ = ['HdfContentsManager', 'HdfContentsHandler']
 class HdfContentsManager(HdfBaseManager):
     """Implements HDF5 contents handling
     """
-    def _get(self, f, uri, row, col):
-        obj = f[uri]
-
-        if isinstance(obj, h5py.Group):
-            return [(groupDict if isinstance(val, h5py.Group) else dsetDict)
-                        (name=name, uri=uriJoin(uri, name))
-                    for name,val in obj.items()]
-        else:
-            return dsetDict(
-                name=uriName(uri),
-                uri=uri,
-                content=dsetContentDict(obj, row, col),
-            )
+    def _get(self, f, uri, select):
+        return "Temporarily Deactivated"
+        # obj = f[uri]
+        #
+        # if isinstance(obj, h5py.Group):
+        #     # print("CONTENTS GROUP RETURN: " + str([(groupDict if isinstance(val, h5py.Group) else dsetDict)
+        #     #             (name=name, uri=uriJoin(uri, name))
+        #     #         for name,val in obj.items()]))
+        #
+        #     return [(groupDict if isinstance(val, h5py.Group) else dsetDict)
+        #                 (name=name, uri=uriJoin(uri, name))
+        #             for name,val in obj.items()]
+        # else:
+        #     return dsetDict(
+        #         name=uriName(uri),
+        #         uri=uri,
+        #         content=dsetContentDict(obj, select, col),
+        #     )
 
 
 ## handler
