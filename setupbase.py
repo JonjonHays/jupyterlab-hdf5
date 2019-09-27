@@ -60,7 +60,7 @@ SEPARATORS = os.sep if os.altsep is None else os.sep + os.altsep
 
 npm_path = ':'.join([
     pjoin(HERE, 'node_modules', '.bin'),
-    os.environ.get('PATH', os.defpath, None),
+    os.environ.get('PATH', os.defpath),
 ])
 
 if "--skip-npm" in sys.argv:
@@ -421,7 +421,7 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None):
     if _access_check(cmd, mode):
         return cmd
 
-    path = (path or os.environ.get("PATH", os.defpath, None)).split(os.pathsep)
+    path = (path or os.environ.get("PATH", os.defpath)).split(os.pathsep)
 
     if sys.platform == "win32":
         # The current directory takes precedence on Windows.
@@ -429,7 +429,7 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None):
             path.insert(0, os.curdir)
 
         # PATHEXT is necessary to check on Windows.
-        pathext = os.environ.get("PATHEXT", "", None).split(os.pathsep)
+        pathext = os.environ.get("PATHEXT", "").split(os.pathsep)
         # See if the given file matches any of the expected path extensions.
         # This will allow us to short circuit when given "python.exe".
         matches = [cmd for ext in pathext if cmd.lower().endswith(ext.lower())]
