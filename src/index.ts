@@ -208,12 +208,15 @@ function addBrowserCommands(
         fpath: args["fpath"] as string,
         uri: args["uri"] as string
       };
-      if (args["col"]) {
-        params.col = args["col"] as number[];
+      if (args["select"]) {
+        params.select = args["select"] as string;
       }
-      if (args["row"]) {
-        params.row = args["row"] as number[];
-      }
+      // if (args["col"]) {
+      //   params.col = args["col"] as number[];
+      // }
+      // if (args["row"]) {
+      //   params.row = args["row"] as number[];
+      // }
 
       return hdfContentsRequest(params, serverSettings);
     },
