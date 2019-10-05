@@ -7,7 +7,7 @@ Distributed under the terms of the Modified BSD License.
 import h5py
 
 from .baseHandler import HdfBaseManager, HdfBaseHandler
-# from .util import dsetContentDict, dsetDict, groupDict, uriJoin, uriName
+from .util import dsetContentDict, dsetDict, groupDict, uriJoin, uriName
 
 __all__ = ['HdfContentsManager', 'HdfContentsHandler']
 
@@ -16,14 +16,9 @@ class HdfContentsManager(HdfBaseManager):
     """Implements HDF5 contents handling
     """
     def _get(self, f, uri, select):
-        return "Temporarily Deactivated"
         obj = f[uri]
         
-        if isinstance(obj, h5py.Group):
-            # print("CONTENTS GROUP RETURN: " + str([(groupDict if isinstance(val, h5py.Group) else dsetDict)
-            #             (name=name, uri=uriJoin(uri, name))
-            #         for name,val in obj.items()]))
-        
+        if isinstance(obj, h5py.Group):        
             return [(groupDict if isinstance(val, h5py.Group) else dsetDict)
                         (name=name, uri=uriJoin(uri, name))
                     for name,val in obj.items()]
@@ -33,7 +28,6 @@ class HdfContentsManager(HdfBaseManager):
                 uri=uri,
                 content=dsetContentDict(obj, select)
             )
-
 
 ## handler
 class HdfContentsHandler(HdfBaseHandler):

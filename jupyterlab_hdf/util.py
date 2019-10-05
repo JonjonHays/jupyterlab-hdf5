@@ -83,7 +83,7 @@ def _getHyperslabSlices(dsetshape, select):
         # Default: return entire dataset
         return tuple(slice(0, extent) for extent in dsetshape)
     # if rank == 1:
-    #     TODO: make brackets optional for 1d? 
+    #     TODO: make brackets optional for 1d? Or not...
     #     trimmed = select.
     #     return slice()
 
