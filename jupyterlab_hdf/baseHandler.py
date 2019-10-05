@@ -36,13 +36,13 @@ class HdfBaseManager:
             )))
 
         if not relfpath:
-            msg = 'The request was malformed; fpath should not be empty.'
+            msg = f'The request was malformed; fpath should not be empty.'
             _handleErr(400, msg)
 
         fpath = url_path_join(self.notebook_dir, relfpath)
 
         if not os.path.exists(fpath):
-            msg = 'The request specified a file that does not exist.'
+            msg = f'The request specified a file that does not exist.'
             _handleErr(403, msg)
         else:
             try:

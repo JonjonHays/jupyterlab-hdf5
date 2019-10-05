@@ -3,33 +3,89 @@ import re
 from tornado.web import HTTPError
 
 __all__ = [
-    # 'chunkSlice',
+    'chunkSlice',
     'dsetChunk',
-    # 'dsetContentDict',
-    # 'dsetDict',
-    # 'groupDict',
+    'dsetContentDict',
+    'dsetDict',
+    'groupDict',
     'uriJoin',
     'uriName'
 ]
 
 ## chunk handling
-# def chunkSlice(chunk, s):
-#     if s.start is None:
-#         return slice(None, s.stop*chunk, s.step)
-#
-#     return slice(s.start*chunk, s.stop*chunk, s.step)
+def chunkSlice(chunk, s):
+    if s.start is None:
+        return slice(None, s.stop*chunk, s.step)
+
+    return slice(s.start*chunk, s.stop*chunk, s.step)
 
 def dsetChunk(dset, select):
-    slices = getHyperslabSlices(dset.shape, select)
+    slices = _getHyperslabSlices(dset.shape, select)
     return dset[slices].tolist()
 
-def getHyperslabSlices(dsetshape, select):
-    rank = len(dsetshape)
+## create dicts to be converted to json
+def dsetContentDict(dset, select=None):
+    return dict([
+        # metadata
+        ('attrs', dict(*dset.attrs.items())),
+        ('dtype', dset.dtype.str),
+        ('ndim', dset.ndim),
+        ('shape', dset.shape),
+
+        # actual data
+        ('data', dsetChunk(dset, select) if select else None)
+    ])
+
+def dsetDict(name, uri, content=None):
+    return dict([
+        ('type', 'dataset'),
+        ('name', name),
+        ('uri', uri),
+        ('content', content)
+    ])
+
+def groupDict(name, uri):
+    return dict([
+        ('type', 'group'),
+        ('name', name),
+        ('uri', uri),
+        ('content', None)
+    ])
+
+
+## uri handling
+_emptyUriRe = re.compile('//')
+def uriJoin(*parts):
+    return _emptyUriRe.sub('/', '/'.join(parts))
+
+def uriName(uri):
+    return uri.split('/')[-1]
+
+
+def _getHyperslabSlices(dsetshape, select):
+    """
+    Parse SELECT query param and return tuple of Python slice objects
+
+    :param dsetshape: The shape of the dataset as returned by dset.shape
+    :param select: The SELECT query param should be in the form: 
+    [<dim1>, <dim2>, ... , <dimn>]
+    For each dimension, valid formats are:
+        single integer: n
+        start and end: n:m
+        start, end, and stride: n:m:s
+    :type select: str
+
+    :returns: tuple of Python slices based on the SELECT query param
+    """
+
+    # rank = len(dsetshape)
     if select == 'ALL':
         # Default: return entire dataset
         return tuple(slice(0, extent) for extent in dsetshape)
-    if rank == 1:
-        return slice()
+    # if rank == 1:
+    #     TODO: make brackets optional for 1d? 
+    #     trimmed = select.
+    #     return slice()
 
     if not select.startswith('['):
         msg = "Bad Request: selection query missing start bracket"
@@ -89,43 +145,3 @@ def getHyperslabSlices(dsetshape, select):
         slices.append(slice(start, stop, step))
 
     return tuple(slices)
-
-
-
-## create dicts to be converted to json
-# def dsetContentDict(dset, row=None, col=None):
-#     return dict([
-#         # metadata
-#         ('attrs', dict(*dset.attrs.items())),
-#         ('dtype', dset.dtype.str),
-#         ('ndim', dset.ndim),
-#         ('shape', dset.shape),
-#
-#         # actual data
-#         ('data', dsetChunk(dset, row, col) if row and col else None)
-#     ])
-
-# def dsetDict(name, uri, content=None):
-#     return dict([
-#         ('type', 'dataset'),
-#         ('name', name),
-#         ('uri', uri),
-#         ('content', content)
-#     ])
-#
-# def groupDict(name, uri):
-#     return dict([
-#         ('type', 'group'),
-#         ('name', name),
-#         ('uri', uri),
-#         ('content', None)
-#     ])
-
-
-## uri handling
-_emptyUriRe = re.compile('//')
-def uriJoin(*parts):
-    return _emptyUriRe.sub('/', '/'.join(parts))
-
-def uriName(uri):
-    return uri.split('/')[-1]
