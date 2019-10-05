@@ -84,7 +84,6 @@ class HdfBaseHandler(APIHandler):
         select = self.get_query_argument('select', default='ALL')
         try:
             self.finish(json.dumps(self.manager.get(path, uri, select)))
-
         except HTTPError as err:
             self.set_status(err.code)
             response = err.response.body if err.response else str(err.code)

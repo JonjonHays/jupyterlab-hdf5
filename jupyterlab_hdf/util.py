@@ -98,6 +98,10 @@ def _getHyperslabSlices(dsetshape, select):
     select = select[1:-1]
 
     select_array = select.split(',')
+    if len(select_array) > len(dsetshape):
+        msg = "Bad Request: number of selected dimensions exceeds the rank of the dataset"
+        raise HTTPError(400, reason=msg)
+
     slices = []
     for dim, dim_slice in enumerate(select_array):
         extent = dsetshape[dim]
