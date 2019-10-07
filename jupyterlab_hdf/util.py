@@ -78,14 +78,9 @@ def _getHyperslabSlices(dsetshape, select):
     :returns: tuple of Python slices based on the SELECT query param
     """
 
-    # rank = len(dsetshape)
     if select == 'ALL':
         # Default: return entire dataset
         return tuple(slice(0, extent) for extent in dsetshape)
-    # if rank == 1:
-    #     TODO: make brackets optional for 1d? Or not...
-    #     trimmed = select.
-    #     return slice()
 
     if not select.startswith('['):
         msg = "Bad Request: selection query missing start bracket"

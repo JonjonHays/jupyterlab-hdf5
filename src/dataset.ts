@@ -65,7 +65,7 @@ export class HdfDatasetModelBase extends DataModel {
     this._uri = uri;
 
     this._rowCount = shape[0];
-    this._colCount = shape[1] ? shape[1] : 1;
+    this._colCount = shape[1];
 
     this.emitChanged({
       type: "rows-inserted",
@@ -251,8 +251,7 @@ export class HdfDatasetModelBase extends DataModel {
     const params = {
       fpath: this._fpath,
       uri: this._uri,
-      col: `[${colStart}:${colStop}]`,
-      row: `[${rowStart}:${rowStop}]`
+      select: `[${rowStart}:${rowStop}, ${colStart}:${colStop}]`
     };
     hdfDataRequest(params, this._serverSettings).then(data => {
       this._blocks[rowBlock][colBlock] = data;

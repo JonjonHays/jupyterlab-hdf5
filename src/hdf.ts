@@ -109,19 +109,9 @@ export interface IContentsParameters {
   /**
    * String representing an array of slices that determine a
    * hyperslab selection of an HDF5 dataset. Syntax and semantics
-   * matches that of h5py's dataset indexing.
+   * matches that of h5py's Dataset indexing.
    */
   select?: string;
-
-  // /**
-  //  * Row slice. Up to 3 integers, same syntax as for Python `slice` built-in.
-  //  */
-  // row?: number[];
-
-  // /**
-  //  * Column slice. Up to 3 integers, same syntax as for Python `slice` built-in.
-  //  */
-  // col?: number[];
 }
 
 /**
