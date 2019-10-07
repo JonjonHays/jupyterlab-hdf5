@@ -80,8 +80,6 @@ export function hdfDataRequest(
     URLExt.join(settings.baseUrl, "hdf", "data", fpath).split("?")[0] +
     URLExt.objectToQueryString({ uri, ...select });
 
-  console.log("fullUrl: " + fullUrl);
-
   return ServerConnection.makeRequest(fullUrl, {}, settings).then(response => {
     if (response.status !== 200) {
       return response.text().then(data => {
