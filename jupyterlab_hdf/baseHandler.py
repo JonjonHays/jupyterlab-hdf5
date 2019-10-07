@@ -81,7 +81,7 @@ class HdfBaseHandler(APIHandler):
         selected hyperslab of a dataset and return it as serialized JSON.
         """
         uri = '/' + self.get_query_argument('uri').lstrip('/')
-        select = self.get_query_argument('select', default='ALL')
+        select = self.get_query_argument('select', default=None)
         try:
             self.finish(json.dumps(self.manager.get(path, uri, select)))
         except HTTPError as err:

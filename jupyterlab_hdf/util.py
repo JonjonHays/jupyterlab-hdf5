@@ -78,7 +78,7 @@ def _getHyperslabSlices(dsetshape, select):
     :returns: tuple of Python slices based on the SELECT query param
     """
 
-    if select == 'ALL':
+    if select is None:
         # Default: return entire dataset
         return tuple(slice(0, extent) for extent in dsetshape)
 
